@@ -1,0 +1,260 @@
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+}
+
+*,
+*::before,
+*::after {
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+:focus,
+:active {
+    outline: none;
+}
+
+a:focus,
+a:active {
+    outline: none;
+}
+
+nav,
+footer,
+header,
+aside {
+    display: block;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    font-size: 100%;
+    line-height: 1;
+    font-size: 14px;
+    -ms-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+input,
+button,
+textarea {
+    font-family: inherit;
+}
+
+input::-ms-clear {
+    display: none;
+}
+
+button {
+    cursor: pointer;
+}
+
+button::-moz-focus-inner {
+    padding: 0;
+    border: 0;
+}
+
+a,
+a:visited {
+    text-decoration: none;
+}
+
+ul li {
+    list-style: none;
+}
+
+img {
+    vertical-align: top;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-size: inherit;
+    font-weight: 400;
+}
+
+/*--------------------------------------------*/
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,300&display=swap');
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+}
+
+.main__block {
+    position: relative;
+
+    margin: 100px auto;
+    width: 320px;
+    height: 533px;
+    border: 1px solid #000;
+    padding: 0px 8px;
+
+    .app_head {
+        width: 304px;
+        height: 48px;
+
+        position: relative;
+
+        .settings_button {
+            width: 98px;
+            height: 32px;
+
+            border: 1px solid #000000;
+
+            position: absolute;
+            top: 9px;
+            left: 0%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            cursor: pointer;
+        }
+
+        .exit_button {
+            width: 66px;
+            height: 32px;
+
+            border: 1px solid #000000;
+
+            position: absolute;
+            top: 8px;
+            right: 0%;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            cursor: pointer;
+        }
+    }
+
+    .message_screen {
+        height: 437px;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+        border: 1px solid #000000;
+
+        padding: 0px 8px 8px;
+
+        overflow: auto;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            width: 0;
+            height: 0;
+        }
+
+        .message {
+            display: inline-flex;
+
+            padding: 8px 8px 28px;
+            margin-top: 8px;
+
+            position: relative;
+
+            .time {
+                position: absolute;
+                bottom: 8px;
+                right: 8px;
+
+                font-style: italic;
+                font-weight: 300;
+                font-size: 14px;
+                line-height: 16px;
+                color: #333333;
+            }
+        }
+
+        .send_message {
+            background: #F7F7F7;
+        }
+
+        .deliver_message {
+            background: #E5E5E5;
+        }
+
+        .my_message {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+
+    }
+
+    .input_form {
+        padding: 8px 0px;
+        position: relative;
+
+        .input_message {
+            width: 267px;
+            height: 32px;
+
+            border: 1px solid #000000;
+
+            padding: 7px;
+
+            font-family: 'Roboto';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 19px;
+        }
+
+        .send_button {
+            position: absolute;
+            top: 8px;
+            right: 0%;
+
+            width: 29px;
+            height: 32px;
+            border: 1px solid #000000;
+            background: #FFFFFF;
+        }
+    }
+}
+
+.settings_menu {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+
+    background: #535353;
+    width: 320px;
+    height: 533px;
+    border: 1px solid #000;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .menu {
+
+        width: 273px;
+        height: 319px;
+        background: #FFFFFF;
+    }
+}
+
+.hidden {
+    display: none;
+}
