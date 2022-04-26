@@ -104,20 +104,19 @@ body {
     padding: 0px 8px;
 
     .app_head {
-        width: 304px;
+        width: 302px;
         height: 48px;
 
-        position: relative;
+        padding-top: 8px;
+
+        display: flex;
+        justify-content: space-between;
 
         .settings_button {
             width: 98px;
             height: 32px;
 
             border: 1px solid #000000;
-
-            position: absolute;
-            top: 9px;
-            left: 0%;
 
             display: flex;
             justify-content: center;
@@ -132,10 +131,6 @@ body {
 
             border: 1px solid #000000;
 
-            position: absolute;
-            top: 8px;
-            right: 0%;
-
             display: flex;
             justify-content: center;
             align-items: center;
@@ -148,8 +143,8 @@ body {
         height: 437px;
 
         display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
+        flex-flow: column-reverse nowrap;
+        align-items: flex-end;
 
         border: 1px solid #000000;
 
@@ -201,9 +196,10 @@ body {
 
     }
 
-    .input_form {
+    .message_form {
         padding: 8px 0px;
-        position: relative;
+        display: flex;
+        justify-content: space-between;
 
         .input_message {
             width: 267px;
@@ -221,10 +217,6 @@ body {
         }
 
         .send_button {
-            position: absolute;
-            top: 8px;
-            right: 0%;
-
             width: 29px;
             height: 32px;
             border: 1px solid #000000;
@@ -238,21 +230,81 @@ body {
     top: 0%;
     left: 0%;
 
-    background: #535353;
-    width: 320px;
-    height: 533px;
-    border: 1px solid #000;
+    background: #5353537e;
+    width: 319px;
+    height: 532px;
 
     display: flex;
     justify-content: center;
     align-items: center;
 
     .menu {
-
         width: 273px;
         height: 319px;
         background: #FFFFFF;
+        padding: 16px 14px 17px;
+
+        display: flex;
+        flex-direction: column;
+
+        .menu_head {
+            display: flex;
+            justify-content: space-between;
+
+            margin-bottom: 16px;
+        }
+
+        .menu_body {
+            display: flex;
+            flex-direction: column;
+
+            .settings_form {
+                display: flex;
+                justify-content: space-between;
+
+                margin-top: 8px;
+
+                .nickname {
+                    font-family: 'Roboto';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 16px;
+                    line-height: 19px;
+
+                    width: 207px;
+                    height: 32px;
+
+                    padding: 6px 8px;
+
+                    border: 1px solid #000000;
+                }
+
+                .send_button {
+                    font-family: 'Roboto';
+                    font-style: normal;
+                    font-weight: 400;
+                    font-size: 16px;
+
+                    width: 30px;
+                    height: 32px;
+
+                    background: #FFFFFF;
+                    border: 1px solid #000000;
+                }
+            }
+
+
+        }
     }
+}
+
+.close_button {
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 70%;
+    opacity: 0.45;
+    transform: rotate(-45deg);
+    background: #FFFFFF;
 }
 
 .hidden {

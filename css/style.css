@@ -102,18 +102,21 @@ body {
 }
 
 .main__block .app_head {
-  width: 304px;
+  width: 302px;
   height: 48px;
-  position: relative;
+  padding-top: 8px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
 .main__block .app_head .settings_button {
   width: 98px;
   height: 32px;
   border: 1px solid #000000;
-  position: absolute;
-  top: 9px;
-  left: 0%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -130,9 +133,6 @@ body {
   width: 66px;
   height: 32px;
   border: 1px solid #000000;
-  position: absolute;
-  top: 8px;
-  right: 0%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -151,12 +151,12 @@ body {
   display: -ms-flexbox;
   display: flex;
   -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+  -webkit-box-direction: reverse;
+      -ms-flex-flow: column-reverse nowrap;
+          flex-flow: column-reverse nowrap;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
   border: 1px solid #000000;
   padding: 0px 8px 8px;
   overflow: auto;
@@ -206,12 +206,17 @@ body {
           justify-content: flex-end;
 }
 
-.main__block .input_form {
+.main__block .message_form {
   padding: 8px 0px;
-  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
 }
 
-.main__block .input_form .input_message {
+.main__block .message_form .input_message {
   width: 267px;
   height: 32px;
   border: 1px solid #000000;
@@ -223,10 +228,7 @@ body {
   line-height: 19px;
 }
 
-.main__block .input_form .send_button {
-  position: absolute;
-  top: 8px;
-  right: 0%;
+.main__block .message_form .send_button {
   width: 29px;
   height: 32px;
   border: 1px solid #000000;
@@ -237,10 +239,9 @@ body {
   position: absolute;
   top: 0%;
   left: 0%;
-  background: #535353;
-  width: 320px;
-  height: 533px;
-  border: 1px solid #000;
+  background: #5353537e;
+  width: 319px;
+  height: 532px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -255,6 +256,77 @@ body {
 .settings_menu .menu {
   width: 273px;
   height: 319px;
+  background: #FFFFFF;
+  padding: 16px 14px 17px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.settings_menu .menu .menu_head {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.settings_menu .menu .menu_body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.settings_menu .menu .menu_body .settings_form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-top: 8px;
+}
+
+.settings_menu .menu .menu_body .settings_form .nickname {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 19px;
+  width: 207px;
+  height: 32px;
+  padding: 6px 8px;
+  border: 1px solid #000000;
+}
+
+.settings_menu .menu .menu_body .settings_form .send_button {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  width: 30px;
+  height: 32px;
+  background: #FFFFFF;
+  border: 1px solid #000000;
+}
+
+.close_button {
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 70%;
+  opacity: 0.45;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
   background: #FFFFFF;
 }
 
