@@ -3,17 +3,24 @@ import {
 
 } from './const.js'
 
-import { 
-    format 
+import {
+    switchOptionalMenu,
+} from './utilities.js'
+
+import {
+    format
 } from 'date-fns'
 
 export function settingsMenuOnUI() {
-    const userOpensSettingsMenu = DEFAULT_UI_ELEMENTS.SETTINGS_MENU.classList.contains('hidden');
-    if (userOpensSettingsMenu) {
-        DEFAULT_UI_ELEMENTS.SETTINGS_MENU.classList.remove('hidden');
-    } else {
-        DEFAULT_UI_ELEMENTS.SETTINGS_MENU.classList.add('hidden');
-    }
+    switchOptionalMenu(DEFAULT_UI_ELEMENTS.SETTINGS_MENU);
+}
+
+export function autorisationEmailMenuOnUI() {
+    switchOptionalMenu(DEFAULT_UI_ELEMENTS.AUTORISATION_EMAIL_MENU);
+}
+
+export function autorisationPasswordMenuOnUI() {
+    switchOptionalMenu(DEFAULT_UI_ELEMENTS.AUTORISATION_PASSWORD_MENU);
 }
 
 export function messageOnUI(message, date) {
