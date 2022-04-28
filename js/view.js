@@ -11,6 +11,8 @@ import {
     format
 } from 'date-fns'
 
+import Cookies from 'js-cookie'
+
 export function settingsMenuOnUI() {
     switchOptionalMenu(DEFAULT_UI_ELEMENTS.SETTINGS_MENU);
 }
@@ -31,7 +33,7 @@ export function messageOnUI(message, date) {
     messageBody.classList.add('message', 'send_message');
 
     messageBody.append(DEFAULT_UI_ELEMENTS.SAMPLE_MESSAGE_CONTENT.content.cloneNode(true));
-    messageBody.firstElementChild.textContent = message;
+    messageBody.firstElementChild.textContent = `${Cookies.get('userName')}: ${message}`;
     messageBody.lastElementChild.textContent = format(date, 'k:mm');
 
     messageBlock.append(messageBody);

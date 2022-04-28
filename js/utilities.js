@@ -6,3 +6,7 @@ export function switchOptionalMenu (menu) {
         menu.classList.add('hidden');
     }
 }
+
+export function notEmptyInput(value) {
+    return value.split(' ').join('') !== '';
+}

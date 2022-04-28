@@ -10,6 +10,9 @@ export const DEFAULT_UI_ELEMENTS = {
 
     SETTINGS_MENU_EXIT_BUTTON: settingsMenuExitButton,
     SETTINGS_MENU: settingsMenu,
+    SETTINGS_MENU_FORM: nicknameForm,
+    SETTINGS_MENU_INPUT: nicknameInput,
+
     
     AUTORISATION_EMAIL_MENU: autorisationEmail,
     AUTORISATION_EMAIL_EXIT_BUTTON: autorisationEmailMenuExitButton,
@@ -22,4 +25,6 @@ export const DEFAULT_UI_ELEMENTS = {
     AUTORISATION_PASSWORD_INPUT: inputPassword,
 }
 
-export const emailURL = 'https://mighty-cove-31255.herokuapp.com/api/user';
+export const serverURL = 'https://mighty-cove-31255.herokuapp.com/api/user';
+
+export const userNameURL = `${serverURL}/me`;
