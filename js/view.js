@@ -25,18 +25,33 @@ export function autorisationPasswordMenuOnUI() {
     switchOptionalMenu(DEFAULT_UI_ELEMENTS.AUTORISATION_PASSWORD_MENU);
 }
 
-export function messageOnUI(message, date) {
+export function messageOnUI(userName, message, date, status) {
     const messageBlock = document.createElement('div');
-    messageBlock.classList.add('my_message');
 
     const messageBody = document.createElement('div');
-    messageBody.classList.add('message', 'send_message');
+    messageBody.classList.add('message');
 
     messageBody.append(DEFAULT_UI_ELEMENTS.SAMPLE_MESSAGE_CONTENT.content.cloneNode(true));
-    messageBody.firstElementChild.textContent = `${Cookies.get('userName')}: ${message}`;
+    messageBody.firstElementChild.textContent = `${userName}: ${message}`;
     messageBody.lastElementChild.textContent = format(date, 'k:mm');
 
     messageBlock.append(messageBody);
 
-    DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.append(messageBlock);
+    const thisIsUserMessage = Cookies.get('userName') == userName;
+
+    console.log(thisIsUserMessage);
+
+    if (thisIsUserMessage) {
+        messageBlock.classList.add('my_message');
+    }
+
+    const thisMessageDelivered = status === 'delivered';
+
+    if (thisMessageDelivered) {
+        messageBody.classList.add('deliver_message');
+        DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.append(messageBlock);
+    } else {
+        messageBody.classList.add('send_message');
+        DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.prepend(messageBlock);
+    }
 }

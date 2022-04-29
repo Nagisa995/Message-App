@@ -84,7 +84,9 @@ h6 {
 }
 
 /*--------------------------------------------*/
-body, input, button {
+body,
+input,
+button {
   font-family: 'Roboto', sans-serif;
   font-style: normal;
   font-weight: 400;
@@ -154,9 +156,6 @@ body, input, button {
   -webkit-box-direction: reverse;
       -ms-flex-flow: column-reverse nowrap;
           flex-flow: column-reverse nowrap;
-  -webkit-box-align: end;
-      -ms-flex-align: end;
-          align-items: flex-end;
   border: 1px solid #000000;
   padding: 0px 8px 8px;
   overflow: auto;
@@ -204,6 +203,17 @@ body, input, button {
   -webkit-box-pack: end;
       -ms-flex-pack: end;
           justify-content: flex-end;
+}
+
+.main__block .message_screen .another_message {
+  -ms-flex-preferred-size: 100%;
+      flex-basis: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
 }
 
 .main__block .message_form {

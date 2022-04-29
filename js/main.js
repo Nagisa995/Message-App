@@ -1,6 +1,6 @@
 import {
     DEFAULT_UI_ELEMENTS,
-
+    messagesPerScreen,
 } from './const.js'
 
 import {
@@ -11,6 +11,7 @@ import {
     sendPasswordOnEmail,
     getUserName,
     changeUserNameOnServer,
+    getMessageHistoryOnServer,
 } from './server.js'
 
 import {
@@ -26,7 +27,7 @@ DEFAULT_UI_ELEMENTS.MAIN_SETTINGS_BUTTON.addEventListener('click', settingsMenuO
 DEFAULT_UI_ELEMENTS.SETTINGS_MENU_EXIT_BUTTON.addEventListener('click', settingsMenuOnUI);
 
 DEFAULT_UI_ELEMENTS.AUTORISATION_EMAIL_EXIT_BUTTON.addEventListener('click', autorisationEmailMenuOnUI);
-DEFAULT_UI_ELEMENTS.MAIN_EXIT_BUTTON.addEventListener('click', autorisationEmailMenuOnUI);
+DEFAULT_UI_ELEMENTS.MAIN_EXIT_BUTTON.addEventListener('click', exitingTheApplication);
 
 DEFAULT_UI_ELEMENTS.AUTORISATION_PASSWORD_EXIT_BUTTON.addEventListener('click', autorisationPasswordMenuOnUI);
 
@@ -34,6 +35,13 @@ DEFAULT_UI_ELEMENTS.MESSAGE_FORM.addEventListener('submit', sendMessage);
 DEFAULT_UI_ELEMENTS.AUTORISATION_EMAIL_FORM.addEventListener('submit', sendPassword);
 DEFAULT_UI_ELEMENTS.AUTORISATION_PASSWORD_FORM.addEventListener('submit', savePasswordToken);
 DEFAULT_UI_ELEMENTS.SETTINGS_MENU_FORM.addEventListener('submit', changeUserName);
+
+const userAutorisationPassBefore = Cookies.get('token') ?? '';
+
+if (userAutorisationPassBefore) {
+    autorisationEmailMenuOnUI();
+    displayPartOfMessages();
+}
 
 async function sendPassword() {
     event.preventDefault();
@@ -70,7 +78,7 @@ async function savePasswordToken() {
             throw new Error('Enter password');
         }
 
-        Cookies.set('token', token);
+        Cookies.set('token', token, { expires: 7 });
 
         const userNameRequest = await getUserName();
 
@@ -113,7 +121,7 @@ async function changeUserName() {
 
         Cookies.set('userName', newUserNameOnServer.name);
     } catch (error) {
-        alert (error.message);
+        alert(error.message);
     } finally {
         DEFAULT_UI_ELEMENTS.SETTINGS_MENU_INPUT.value = '';
     }
@@ -130,6 +138,45 @@ function sendMessage() {
     DEFAULT_UI_ELEMENTS.MESSAGE_INPUT.value = '';
 
     if (messageIsValid) {
-        messageOnUI(messageText, messageDate);
+        messageOnUI(Cookies.get('userName'), messageText, messageDate, 'send');
     }
+}
+
+function exitingTheApplication() {
+    DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.innerHTML = '';
+    Cookies.remove('token');
+    autorisationEmailMenuOnUI();
+}
+
+async function getMessageHistory() {
+    try {
+        const messageHistoryRequest = await getMessageHistoryOnServer();
+        const messageHistoryAnswer = await messageHistoryRequest.json();
+
+        return [...messageHistoryAnswer.messages].reverse();
+    } catch (error) {
+        alert(error.message);
+    }
+}
+
+async function displayPartOfMessages() {
+    const currentIDofLastPost = 0;
+    const nextIDofLastPost = currentIDofLastPost + messagesPerScreen;
+
+    const messageTimeline = await getMessageHistory();
+
+    for (let postID = currentIDofLastPost; postID < nextIDofLastPost; postID++) {
+        let {
+            createdAt: sendTime,
+            text: message,
+            user: {
+                email,
+                name: userName
+            }
+        } = messageTimeline[postID];
+
+        messageOnUI(userName, message, new Date(sendTime), 'delivered');
+    }
+
+    Cookies.set('lastMessageOnScreen', nextIDofLastPost);
 }

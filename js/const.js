@@ -28,3 +28,7 @@ export const DEFAULT_UI_ELEMENTS = {
 export const serverURL = 'https://mighty-cove-31255.herokuapp.com/api/user';
 
 export const userNameURL = `${serverURL}/me`;
+
+export const messageHistoryURL = 'https://mighty-cove-31255.herokuapp.com/api/messages';
+
+export const messagesPerScreen = 20;

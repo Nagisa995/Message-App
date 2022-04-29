@@ -1,6 +1,7 @@
 import {
     serverURL,
     userNameURL,
+    messageHistoryURL,
 } from './const.js'
 
 import Cookies from 'js-cookie'
@@ -31,5 +32,13 @@ export async function changeUserNameOnServer(newUserName) {
             Authorization: `Bearer ${Cookies.get('token')}`,
         },
         body: JSON.stringify({name: newUserName})
+    });
+}
+
+export async function getMessageHistoryOnServer() {
+    return fetch(messageHistoryURL, {
+        headers: {
+            Authorization: `Bearer ${Cookies.get('token')}`,
+        }
     });
 }

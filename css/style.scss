@@ -86,7 +86,9 @@ h6 {
 /*--------------------------------------------*/
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;1,300&display=swap');
 
-body, input, button {
+body,
+input,
+button {
     font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 400;
@@ -144,7 +146,7 @@ body, input, button {
 
         display: flex;
         flex-flow: column-reverse nowrap;
-        align-items: flex-end;
+
 
         border: 1px solid #000000;
 
@@ -193,6 +195,11 @@ body, input, button {
             justify-content: flex-end;
         }
 
+        .another_message {
+            flex-basis: 100%;
+            display: flex;
+            justify-content: flex-start;
+        }
 
     }
 
