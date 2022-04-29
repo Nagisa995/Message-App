@@ -31,4 +31,4 @@ export const userNameURL = `${serverURL}/me`;
 
 export const messageHistoryURL = 'https://mighty-cove-31255.herokuapp.com/api/messages';
 
-export const messagesPerScreen = 20;
+export const messagesPerLoad = 20;

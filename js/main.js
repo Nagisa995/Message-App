@@ -1,6 +1,6 @@
 import {
     DEFAULT_UI_ELEMENTS,
-    messagesPerScreen,
+    messagesPerLoad,
 } from './const.js'
 
 import {
@@ -161,7 +161,7 @@ async function getMessageHistory() {
 
 async function displayPartOfMessages() {
     const currentIDofLastPost = 0;
-    const nextIDofLastPost = currentIDofLastPost + messagesPerScreen;
+    const nextIDofLastPost = currentIDofLastPost + messagesPerLoad;
 
     const messageTimeline = await getMessageHistory();
 
@@ -178,5 +178,5 @@ async function displayPartOfMessages() {
         messageOnUI(userName, message, new Date(sendTime), 'delivered');
     }
 
-    Cookies.set('lastMessageOnScreen', nextIDofLastPost);
+    Cookies.set('lastMessageOnScreen', nextIDofLastPost, { expires: 1 / 48 });
 }

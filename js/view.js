@@ -38,9 +38,7 @@ export function messageOnUI(userName, message, date, status) {
     messageBlock.append(messageBody);
 
     const thisIsUserMessage = Cookies.get('userName') == userName;
-
-    console.log(thisIsUserMessage);
-
+    
     if (thisIsUserMessage) {
         messageBlock.classList.add('my_message');
     }
