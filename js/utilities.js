@@ -10,3 +10,11 @@ export function switchOptionalMenu (menu) {
 export function notEmptyInput(value) {
     return value.split(' ').join('') !== '';
 }
+
+export function serverAnswerIsValid(answerStatus) {
+    return (answerStatus !== 404 && answerStatus !== 500);
+}
+
+export function serverFail() {
+    return 
+}
