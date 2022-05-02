@@ -5,7 +5,10 @@ import {
 
 import {
     notEmptyInput,
-    serverAnswerIsValid
+    serverAnswerIsValid,
+    defaultHistoryID,
+    clearInput,
+    getInputValue
 } from './utilities.js'
 
 import {
@@ -41,14 +44,22 @@ DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.addEventListener('scroll', scrollMessageScree
 
 if (Cookies.get('token')) {
     autorisationEmailMenuOnUI();
-    displayPartOfMessages();
+    getMessageHistory();
+    joinOnline();
+}
+
+function joinOnline() {
+    window.socket = new WebSocket(`ws://mighty-cove-31255.herokuapp.com/websockets?${Cookies.get('token')}`);
+    socket.addEventListener('message', onlineMessageOnScreen);
+    socket.addEventListener('error', ((error) => alert(error.message)));
+    socket.addEventListener('close', joinOnline);
 }
 
 async function sendPassword() {
     event.preventDefault();
 
     try {
-        const userEmail = DEFAULT_UI_ELEMENTS.AUTORISATION_EMAIL_INPUT.value
+        const userEmail = getInputValue(DEFAULT_UI_ELEMENTS.AUTORISATION_EMAIL_INPUT);
 
         const passwordRequest = await sendPasswordOnEmail(userEmail);
 
@@ -63,7 +74,7 @@ async function sendPassword() {
     } catch (error) {
         alert(error.message);
     } finally {
-        DEFAULT_UI_ELEMENTS.AUTORISATION_EMAIL_INPUT.value = '';
+        clearInput(DEFAULT_UI_ELEMENTS.AUTORISATION_EMAIL_INPUT);
     }
 }
 
@@ -71,12 +82,12 @@ async function savePasswordToken() {
     event.preventDefault();
 
     try {
-        const token = DEFAULT_UI_ELEMENTS.AUTORISATION_PASSWORD_INPUT.value;
+        const token = getInputValue(DEFAULT_UI_ELEMENTS.AUTORISATION_PASSWORD_INPUT);
 
-        const tokenIsValid = notEmptyInput(token);
+        const tokenIsNotValid = !notEmptyInput(token);
 
-        if (!tokenIsValid) {
-            throw new Error('Enter password');
+        if (tokenIsNotValid) {
+            return
         }
 
         Cookies.set('token', token, { expires: 7 });
@@ -92,13 +103,15 @@ async function savePasswordToken() {
 
         const userName = await userNameRequest.json();
 
-        Cookies.set('userName', userName.name);
+        Cookies.set('userEmail', userName.email);
 
         autorisationPasswordMenuOnUI();
+        getMessageHistory();
+        joinOnline();
     } catch (error) {
         alert(error.message);
     } finally {
-        DEFAULT_UI_ELEMENTS.AUTORISATION_PASSWORD_INPUT.value = '';
+        clearInput(DEFAULT_UI_ELEMENTS.AUTORISATION_PASSWORD_INPUT);
     }
 }
 
@@ -106,11 +119,11 @@ async function changeUserName() {
     event.preventDefault();
 
     try {
-        const newUserName = DEFAULT_UI_ELEMENTS.SETTINGS_MENU_INPUT.value;
+        const newUserName = getInputValue(DEFAULT_UI_ELEMENTS.SETTINGS_MENU_INPUT);
 
-        const newUserNameIsValid = notEmptyInput(newUserName);
+        const newUserNameIsNotValid = !notEmptyInput(newUserName);
 
-        if (!newUserNameIsValid) {
+        if (newUserNameIsNotValid) {
             return
         }
 
@@ -119,7 +132,7 @@ async function changeUserName() {
         const changeUserNameRequestIsNotValid = !serverAnswerIsValid(changeUserNameRequest.status)
 
         if (!changeUserNameRequest.ok || changeUserNameRequestIsNotValid) {
-            throw new Error('Nickname is not valid, try again');
+            throw new Error('Nickname is not valid, try again later');
         }
 
         const newUserNameOnServer = await changeUserNameRequest.json();
@@ -128,28 +141,33 @@ async function changeUserName() {
     } catch (error) {
         alert(error.message);
     } finally {
-        DEFAULT_UI_ELEMENTS.SETTINGS_MENU_INPUT.value = '';
+        clearInput(DEFAULT_UI_ELEMENTS.SETTINGS_MENU_INPUT);
     }
 }
 
 function sendMessage() {
     event.preventDefault();
 
-    const messageText = DEFAULT_UI_ELEMENTS.MESSAGE_INPUT.value;
-    const messageDate = Date.now();
+    const messageText = getInputValue(DEFAULT_UI_ELEMENTS.MESSAGE_INPUT);
 
     const messageIsValid = notEmptyInput(messageText);
 
-    DEFAULT_UI_ELEMENTS.MESSAGE_INPUT.value = '';
+    clearInput(DEFAULT_UI_ELEMENTS.MESSAGE_INPUT);
 
     if (messageIsValid) {
-        messageOnUI(Cookies.get('userName'), messageText, messageDate, 'send');
+        socket.send(JSON.stringify({ text: `${messageText}`, }));
     }
 }
 
 function exitingTheApplication() {
     DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.innerHTML = '';
+    defaultHistoryID();
+
     Cookies.remove('token');
+    Cookies.remove('userEmail');
+
+    socket.close();
+
     autorisationEmailMenuOnUI();
 }
 
@@ -160,48 +178,39 @@ async function getMessageHistory() {
         const messageHistoryRequestIsNotValid = !serverAnswerIsValid(messageHistoryRequest.status);
 
         if (messageHistoryRequestIsNotValid) {
-            throw new Error ('The server could not provide information, please try again later')
+            throw new Error('The server could not provide information, please try again later')
         }
 
         const messageHistoryAnswer = await messageHistoryRequest.json();
 
-        return [...messageHistoryAnswer.messages].reverse();
+        window.messageHistory = [...messageHistoryAnswer.messages].reverse();
+
+        displayPartOfMessages();
     } catch (error) {
         alert(error.message);
     }
 }
 
-async function displayPartOfMessages() {
+function displayPartOfMessages() {
     const currentIDofLastPost = +DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.lastElementChild.id + 1;
     const nextIDofLastPost = currentIDofLastPost + messagesPerLoad;
 
-    const messageTimeline = await getMessageHistory();
-
-    const fullMessageHistoryOnScreen = currentIDofLastPost === (messageTimeline.length - 1);
+    const fullMessageHistoryOnScreen = currentIDofLastPost === messageHistory.length;
 
     if (fullMessageHistoryOnScreen) {
         return
     }
 
     for (let postID = currentIDofLastPost; postID < nextIDofLastPost; postID++) {
-        const lastMessageInHistoryDisplayed = postID === messageTimeline.length;
+        const lastMessageInHistoryDisplayed = postID === messageHistory.length;
 
         if (lastMessageInHistoryDisplayed) {
             return
         }
 
-        let {
-            createdAt: sendTime,
-            text: message,
-            user: {
-                email,
-                name: userName
-            }
-        } = messageTimeline[postID];
+        messageOnUI(messageHistory[postID], 'history');
 
-        messageOnUI(userName, message, new Date(sendTime), 'delivered');
-
-        DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.lastElementChild.id = postID
+        DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.lastElementChild.id = postID;
     }
 }
 
@@ -210,6 +219,12 @@ async function scrollMessageScreen() {
     const screenIsFullScrolled = scroolSize === DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.scrollTop;
 
     if (screenIsFullScrolled) {
-        await displayPartOfMessages();
+        displayPartOfMessages();
     }
+}
+
+function onlineMessageOnScreen(event) {
+    const messageData = JSON.parse(event.data);
+
+    messageOnUI(messageData, 'online');
 }

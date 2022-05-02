@@ -1,3 +1,5 @@
+import { DEFAULT_UI_ELEMENTS } from "./const";
+
 export function switchOptionalMenu (menu) {
     const userOpensOptionalMenu = menu.classList.contains('hidden');
     if (userOpensOptionalMenu) {
@@ -17,4 +19,18 @@ export function serverAnswerIsValid(answerStatus) {
 
 export function serverFail() {
     return 
+}
+
+export function defaultHistoryID() {
+    const historyStart = document.createElement('div');
+    historyStart.id = -1;
+    DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.append(historyStart);
+}
+
+export function clearInput(input) {
+    input.value = '';
+}
+
+export function getInputValue(input) {
+    return input.value;
 }
