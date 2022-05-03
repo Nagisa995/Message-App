@@ -1,12 +1,11 @@
 import {
     DEFAULT_UI_ELEMENTS,
-    messagesPerLoad,
+    messageHistory,
 } from './const.js'
 
 import {
     notEmptyInput,
     serverAnswerIsValid,
-    defaultHistoryID,
     clearInput,
     getInputValue
 } from './utilities.js'
@@ -16,6 +15,7 @@ import {
     getUserName,
     changeUserNameOnServer,
     getMessageHistoryOnServer,
+    socket
 } from './server.js'
 
 import {
@@ -45,14 +45,7 @@ DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.addEventListener('scroll', scrollMessageScree
 if (Cookies.get('token')) {
     autorisationEmailMenuOnUI();
     getMessageHistory();
-    joinOnline();
-}
-
-function joinOnline() {
-    window.socket = new WebSocket(`ws://mighty-cove-31255.herokuapp.com/websockets?${Cookies.get('token')}`);
-    socket.addEventListener('message', onlineMessageOnScreen);
-    socket.addEventListener('error', ((error) => alert(error.message)));
-    socket.addEventListener('close', joinOnline);
+    socket.init();
 }
 
 async function sendPassword() {
@@ -107,7 +100,7 @@ async function savePasswordToken() {
 
         autorisationPasswordMenuOnUI();
         getMessageHistory();
-        joinOnline();
+        socket.init();
     } catch (error) {
         alert(error.message);
     } finally {
@@ -134,10 +127,6 @@ async function changeUserName() {
         if (!changeUserNameRequest.ok || changeUserNameRequestIsNotValid) {
             throw new Error('Nickname is not valid, try again later');
         }
-
-        const newUserNameOnServer = await changeUserNameRequest.json();
-
-        Cookies.set('userName', newUserNameOnServer.name);
     } catch (error) {
         alert(error.message);
     } finally {
@@ -161,7 +150,7 @@ function sendMessage() {
 
 function exitingTheApplication() {
     DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.innerHTML = '';
-    defaultHistoryID();
+    messageHistory.clear();
 
     Cookies.remove('token');
     Cookies.remove('userEmail');
@@ -183,7 +172,7 @@ async function getMessageHistory() {
 
         const messageHistoryAnswer = await messageHistoryRequest.json();
 
-        window.messageHistory = [...messageHistoryAnswer.messages].reverse();
+        messageHistory.timeline = [...messageHistoryAnswer.messages].reverse();
 
         displayPartOfMessages();
     } catch (error) {
@@ -192,8 +181,8 @@ async function getMessageHistory() {
 }
 
 function displayPartOfMessages() {
-    const currentIDofLastPost = +DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.lastElementChild.id + 1;
-    const nextIDofLastPost = currentIDofLastPost + messagesPerLoad;
+    const currentIDofLastPost = messageHistory.counter;
+    const nextIDofLastPost = currentIDofLastPost + messageHistory.perLoad;
 
     const fullMessageHistoryOnScreen = currentIDofLastPost === messageHistory.length;
 
@@ -208,10 +197,12 @@ function displayPartOfMessages() {
             return
         }
 
-        messageOnUI(messageHistory[postID], 'history');
+        messageOnUI(messageHistory.timeline[postID], 'history');
 
         DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.lastElementChild.id = postID;
     }
+
+    messageHistory.counter = nextIDofLastPost;
 }
 
 async function scrollMessageScreen() {
@@ -223,7 +214,7 @@ async function scrollMessageScreen() {
     }
 }
 
-function onlineMessageOnScreen(event) {
+export function onlineMessageOnScreen(event) {
     const messageData = JSON.parse(event.data);
 
     messageOnUI(messageData, 'online');

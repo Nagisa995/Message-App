@@ -29,6 +29,13 @@ export const serverURL = 'https://mighty-cove-31255.herokuapp.com/api/user';
 
 export const userNameURL = `${serverURL}/me`;
 
-export const messageHistoryURL = 'https://mighty-cove-31255.herokuapp.com/api/messages';
-
-export const messagesPerLoad = 20;
+export const messageHistory = {
+    url: 'https://mighty-cove-31255.herokuapp.com/api/messages',
+    timeline: '',
+    counter: 0,
+    perLoad: 20,
+    clear: function() {
+        this.timeline = '';
+        this.counter = 0;
+    }
+}
