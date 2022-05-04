@@ -23,6 +23,7 @@ import {
     autorisationEmailMenuOnUI,
     autorisationPasswordMenuOnUI,
     messageOnUI,
+    messageHistoryEndOnUI
 } from './view.js'
 
 import Cookies from 'js-cookie'
@@ -184,17 +185,18 @@ function displayPartOfMessages() {
     const currentIDofLastPost = messageHistory.counter;
     const nextIDofLastPost = currentIDofLastPost + messageHistory.perLoad;
 
-    const fullMessageHistoryOnScreen = currentIDofLastPost === messageHistory.length;
+    const fullMessageHistoryOnScreen = currentIDofLastPost >= (messageHistory.timeline.length-1);
 
     if (fullMessageHistoryOnScreen) {
         return
     }
 
     for (let postID = currentIDofLastPost; postID < nextIDofLastPost; postID++) {
-        const lastMessageInHistoryDisplayed = postID === messageHistory.length;
+        const lastMessageInHistoryDisplayed = postID === (messageHistory.timeline.length-1);
 
         if (lastMessageInHistoryDisplayed) {
-            return
+            messageHistoryEndOnUI();
+            break;
         }
 
         messageOnUI(messageHistory.timeline[postID], 'history');

@@ -57,3 +57,11 @@ export function messageOnUI({
         DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.prepend(messageBlock);
     }
 }
+
+export function messageHistoryEndOnUI() {
+    const endMessage = document.createElement('div');
+    endMessage.classList.add('endOfStory');
+    endMessage.textContent = 'Вся история загружена';
+
+    DEFAULT_UI_ELEMENTS.MESSAGE_SCREEN.append(endMessage);
+}
