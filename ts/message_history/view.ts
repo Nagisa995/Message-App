@@ -1,11 +1,7 @@
 import {
     DEFAULT_UI_ELEMENTS,
     TEMPLATE_CONTENT
-} from './const'
-
-import {
-    switchOptionalMenu,
-} from './utils'
+} from '../const'
 
 import {
     format
@@ -13,17 +9,6 @@ import {
 
 import Cookies from 'js-cookie'
 
-export function settingsMenuOnUI():void {
-    switchOptionalMenu(DEFAULT_UI_ELEMENTS.SETTINGS_MENU);
-}
-
-export function autorisationEmailMenuOnUI():void {
-    switchOptionalMenu(DEFAULT_UI_ELEMENTS.AUTORISATION_EMAIL_MENU);
-}
-
-export function autorisationPasswordMenuOnUI():void {
-    switchOptionalMenu(DEFAULT_UI_ELEMENTS.AUTORISATION_PASSWORD_MENU);
-}
 
 interface messageData {
     createdAt: Date,
@@ -68,8 +53,8 @@ export function messageOnUI({
     }
 }
 
-export function messageHistoryEndOnUI() {
-    const endMessage = document.createElement('div');
+export function messageHistoryEndOnUI(): void {
+    const endMessage: HTMLDivElement = document.createElement('div');
     endMessage.classList.add('endOfStory');
     endMessage.textContent = 'Вся история загружена';
 
